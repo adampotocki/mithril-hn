@@ -1,0 +1,1 @@
+{"version":3,"sources":["layout.css"],"names":[],"mappings":"AAAA,SACE,UAAY,CACb,AAED,yBACE,cAAgB,CACjB","file":"styles.css","sourcesContent":["img.logo {\n  width: 100%;\n}\n\nspan.hide, span.show-more {\n  cursor: pointer;\n}"]}
