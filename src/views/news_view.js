@@ -25,16 +25,27 @@ const NewsView = {
   view(vnode) {
     let loading = NewsModel.loading.list;
     let { name, page } = vnode.state;
+    page = Number(page);
 
     return loading
       ? m(LoadingIcon)
       : m('div.news', [
           m(NewsList, { start: page }),
-          m('div.pager', [
-            m('a', {
-              href: `/${name}/${++page}`,
-              oncreate: m.route.link
-            }, 'More...')
+          m('br'),
+          m('div.page.has-text-centered', [
+            (page >= 2) ? m('span', [
+                  m('a', {
+                    href: `/${name}/${page - 1}`,
+                    oncreate: m.route.link
+                  }, `Previous Page`),
+                  m('span', ' | ')
+                ]) : '',
+            m('span', [
+              m('a', {
+                href: `/${name}/${page + 1}`,
+                oncreate: m.route.link
+              }, 'Next Page')
+            ])
           ])
         ]);
   }

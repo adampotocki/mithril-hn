@@ -24,7 +24,7 @@ const Nav = [
   }
 ];
 
-const Header = {
+const Navigation = {
   view(vnode) {
     return [
       m('nav.nav.has-shadow', [
@@ -46,9 +46,11 @@ const Header = {
         ]),
         m('.nav-right.nav-menu', [
           Nav.map(navItem => {
+            const currentRoute = m.route.get().split('/')[1];
+            const navRoute = navItem.route.split('/')[1];
             return m('a.nav-item.is-tab', {
               href: navItem.route,
-              class: m.route.get() === navItem.route ? 'is-active' : '',
+              class: currentRoute === navRoute ? 'is-active' : '',
               oncreate: m.route.link
             }, navItem.name);
           })
@@ -61,7 +63,7 @@ const Header = {
 const Layout = {
   view(vnode) {
     return m('.layout', [
-      m(Header),
+      m(Navigation),
       m('section.section', vnode.children)
     ]);
   }
