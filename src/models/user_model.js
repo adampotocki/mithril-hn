@@ -10,15 +10,14 @@ const UserModel = {
   current: {},
 
   load(id) {
-    this.loading.current = true;
-    console.log(id)
+    UserModel.loading.current = true;
     m.request({
       method: 'GET',
       url: `${apiUrl}/user/${id}`
     })
     .then(res => {
-      this.current = res;
-      this.loading.current = false;
+      UserModel.current = res;
+      UserModel.loading.current = false;
     });
   }
 };

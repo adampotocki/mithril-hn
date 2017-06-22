@@ -26,7 +26,7 @@ const CommentItem = {
   showComments: true,
 
   toggleShowComments() {
-    this.showComments = !this.showComments;
+    CommentItem.showComments = !CommentItem.showComments;
   },
 
   view(vnode) {
@@ -42,9 +42,9 @@ const CommentItem = {
         m('span', ` ${comment.time_ago}`)
       ]),
       m('div.content', m.trust(comment.content)),
-      this.showComments
-        ? childComments(comment.comments, () => this.toggleShowComments())
-        : showMore(comment, () => this.toggleShowComments())
+      CommentItem.showComments
+        ? childComments(comment.comments, () => CommentItem.toggleShowComments())
+        : showMore(comment, () => CommentItem.toggleShowComments())
     ]);
   }
 };

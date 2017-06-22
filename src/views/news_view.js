@@ -4,49 +4,58 @@ import NewsModel from '../models/news_model';
 import NewsList from '../components/news_list';
 import LoadingIcon from '../components/loading_icon';
 
-const pageToListType = {
+const listTypes = {
   top: 'news',
   new: 'newest',
-  jobs: 'jobs',
+  show: 'show',
   ask: 'ask',
-  show: 'show'
+  jobs: 'jobs'
 };
 
 const NewsView = {
   oninit(vnode) {
-    const { key, name } = vnode.attrs;
-    vnode.state.page = key;
-    vnode.state.name = name;
+    vnode.state.page = ~~vnode.attrs.key;
+    vnode.state.name = vnode.attrs.name;
 
-    let listType = pageToListType[name];
-    NewsModel.load({ listType, key });
+    NewsModel.load({
+      listType: listTypes[vnode.state.name],
+      page: vnode.state.page
+    });
   },
 
   view(vnode) {
-    let loading = NewsModel.loading.list;
-    let { name, page } = vnode.state;
-    page = Number(page);
+    const loading = NewsModel.loading.list;
+    const name = vnode.state.name;
+    const page = vnode.state.page;
 
     return loading
       ? m(LoadingIcon)
       : m('div.news', [
-          m(NewsList, { start: page }),
-          m('br'),
-          m('div.page.has-text-centered', [
-            (page >= 2) ? m('span', [
+          !NewsModel.list.length
+            ? m('span.has-text-centered', [
+                m('p','No articles on this page')
+              ])
+            : [
+              m(NewsList, { start: page }),
+              m('br'),
+              m('div.page.has-text-centered', [
+                (page >= 2)
+                  ? m('span', [
+                        m('a', {
+                          href: `/${name}/${page - 1}`,
+                          oncreate: m.route.link
+                        }, `Previous Page`),
+                        m('span', ' | ')
+                      ])
+                  : '',
+                m('span', [
                   m('a', {
-                    href: `/${name}/${page - 1}`,
+                    href: `/${name}/${page + 1}`,
                     oncreate: m.route.link
-                  }, `Previous Page`),
-                  m('span', ' | ')
-                ]) : '',
-            m('span', [
-              m('a', {
-                href: `/${name}/${page + 1}`,
-                oncreate: m.route.link
-              }, 'Next Page')
-            ])
-          ])
+                  }, 'Next Page')
+                ])
+              ])
+            ]
         ]);
   }
 };
